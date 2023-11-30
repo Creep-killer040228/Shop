@@ -1,0 +1,94 @@
+.dynamic {
+    margin-top: 180px;
+    background: white;
+    padding: 100px;
+    border-radius: 10px;
+
+    &-wrapper {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        position: relative;
+        gap: 10px;
+
+        &__discount {
+            position: absolute;
+            top: -50px;
+            z-index: 1;
+            left: 50%;
+            color: #062F42;
+            font-size: 20px;
+            font-weight: 400;
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            border-radius: 50%;
+            background: gold;
+            transform: rotate(25deg);
+        }
+
+        &__desc {
+            display: flex;
+            flex-direction: column;
+            gap: 41px;
+            position: relative;
+            text-align: end;
+            align-items: end;
+
+            &-cost {
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+
+                &-price {
+                    display: flex;
+                    font-size: 30px;
+
+                    justify-content: end;
+                }
+
+                &-price.active {
+                    text-decoration: line-through;
+                }
+
+                &-priceDiscount {
+                    font-size: 45px;
+                    display: none;
+                }
+
+                &-priceDiscount.active {
+                    display: flex;
+
+                }
+
+                &-btn {
+                    padding: 10px 30px;
+                    border: 1px solid #005C67;
+                    cursor: pointer;
+                    font-size: 20px;
+                    width: max-content;
+                    position: absolute;
+                    bottom: 0;
+                    right: 0;
+                }
+            }
+
+            &-title {
+                font-size: 30px;
+            }
+
+            &-sub {
+                max-width: 500px;
+                width: 100%;
+            }
+
+            &-stock {
+                font-size: 25px;
+            }
+        }
+    }
+}

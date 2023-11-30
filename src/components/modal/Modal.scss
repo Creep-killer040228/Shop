@@ -1,0 +1,107 @@
+.modal {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  top: 0;
+
+
+
+
+  &__wrapper {
+    background: #fff;
+    min-height: 700px;
+    max-width: 700px;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    overflow-y: auto;
+
+    &_buy.active {
+      position: sticky;
+    }
+
+    &_buy {
+      position: absolute;
+      bottom: 0;
+      background: black;
+      color: #fff;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      display: flex;
+      justify-content: space-around;
+      font-size: 20px;
+
+      &-cleaning {
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all .4s linear;
+
+        &:hover {
+          background: #fff;
+          color: black;
+        }
+      }
+
+      &-allBuy {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        transition: all .4s linear;
+
+        &:hover {
+          background: #fff;
+          color: black;
+        }
+      }
+    }
+
+    &_all {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      font-size: 20px;
+    }
+
+    &_title {
+      padding: 25px;
+      position: sticky;
+      top: 0;
+      background: #fff;
+    }
+
+    &_card {
+      padding: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 20px;
+
+      &-increment,
+      &-dicrement {
+        font-size: 30px;
+        background: gold;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      &-img img {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  }
+}
