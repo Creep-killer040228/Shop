@@ -23,7 +23,7 @@ interface RegularVariables {
 export const useProduct = defineStore({
   id: "useProduct",
   state: (): RegularVariables => ({
-    products: {},
+    products: [],
     productsBasket: [],
     modal: false,
     modalPurchased: false,
@@ -68,17 +68,17 @@ export const useProduct = defineStore({
     },
   }),
   actions: {
-    async getProducts(options: { limit: Number, category: string }) {
+    async getProducts(options: { limit: number, category: string }) {
       const limit = options.limit || 10
       const categoryName = options.category || '';
       try {
         if (categoryName !== '') {
-          const res = await axios.get(`https://dummyjson.com/products/category/${categoryName}?limit=${limit}`);
+          const res = await axios.get(`https://dummyjson.com/products/category/${categoryName}`);
           this.products = res.data.products.map((el) => ({ ...el, total: 0 }));
           this.scrollСheck = false
         }
         else if (categoryName == '') {
-          const res = await axios.get(`https://dummyjson.com/products/?limit=${limit}`);
+          const res = await axios.get(`https://dummyjson.com/products/?limit=${limit * 12}`);
           this.products = res.data.products.map((el) => ({ ...el, total: 0 }));
           this.scrollСheck = true
         }

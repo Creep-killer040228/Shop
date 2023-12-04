@@ -17,8 +17,11 @@ const Store = useProduct();
 
 interface Products {
   rating: number;
-  price: number;
   discountPercentage: number;
+  title: string;
+  thumbnail: string;
+  price: number;
+  id: number;
 }
 
 const filteredProducts = computed(() => {

@@ -3,23 +3,24 @@
     <Modal />
     <Header />
     <RouterView></RouterView>
-    <LoudingHome v-if="!Store.products.length" />
+    <LoudingHome v-if="!Object.keys(Store.products).length" />
   </div>
 </template>
 
 <script setup lang="ts">
 import LoudingHome from "./components/ui/LoudingHome.vue";
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted } from "vue";
 import Header from "./components/header/Header.vue";
 import Modal from "./components/modal/Modal.vue";
 import { useProduct } from "./stores/Product.js";
 const Store = useProduct();
-const limit = ref<number>(12);
-const increment = ref<number>(0);
+const limit = ref<number>(1);
+const products = ref<any>(Store.products);
+
 
 const fetchProducts = async () => {
   try {
-    await Store.getProducts({ limit: limit.value });
+    await Store.getProducts({ category: '', limit: limit.value });
   } catch (error) {
     console.error("Произошла ошибка при загрузке товаров", error);
   }
@@ -31,11 +32,10 @@ const handleScroll = () => {
   const contentHeight = document.documentElement.scrollHeight;
   if (
     contentHeight - scrollPosition < threshold &&
-    Store.products.length < 100 &&
+    products.value.length < 100 &&
     Store.scrollСheck == true
   ) {
-    limit.value += 5 * increment.value;
-    increment.value++;
+    limit.value++
     fetchProducts();
     window.removeEventListener("scroll", handleScroll);
     setTimeout(() => {
@@ -46,8 +46,5 @@ const handleScroll = () => {
 onMounted(() => {
   fetchProducts();
   window.addEventListener("scroll", handleScroll);
-});
-onUnmounted(() => {
-  window.removeEventListener("scroll", handleScroll);
 });
 </script>
