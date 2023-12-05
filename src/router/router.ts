@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Homes from '@/views/homes/Homes.vue';
+import Homes from '../views/homes/Homes.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -12,17 +12,17 @@ const router = createRouter({
     {
       path: '/categories',
       name: 'Categories',
-      component: () => import('@/views/categories/Categories.vue'),
+      component: () => import('../views/categories/Categories.vue'),
     },
     {
       path: '/categories/:productId',
       name: 'CardDinamik',
-      component: () => import('@/views/categories/CardDinamik.vue')
+      component: () => import('../views/categories/CardDinamik.vue')
     },
     {
       path: "/:pathMatch(.*)*",
       name: "NotFound",
-      component: () => import('@/views/error/Errors.vue')
+      component: () => import('../views/error/Errors.vue')
     },
   ],
 });
