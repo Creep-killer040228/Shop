@@ -18,7 +18,6 @@ import { defineProps } from 'vue';
 
 interface Product {
     id: number;
-    name: string;
     price: number;
     total: number;
     thumbnail?: string;
