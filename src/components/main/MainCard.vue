@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { defineProps, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useProduct } from '@/stores/Product.ts'
+import { useProduct } from '../../stores/Product.ts'
 const Store = useProduct()
 const props = defineProps<{
   product: {

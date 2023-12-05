@@ -31,26 +31,29 @@
 </template>
   
 <script setup lang="ts">
-import { useProduct } from '@/stores/Product.ts';
+import { useProduct } from '../../stores/Product.ts';
 import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css";
 import "swiper/css/navigation";
 const Store = useProduct();
-const Products = ref(Store.products);
-const ProductsBasket = ref(Store.productsBasket);
+const Products = computed(() => Store.products);
 const $route = useRoute();
+const ProductsBasket = computed(() => Store.productsBasket as ProductDetails[]);
+
+
 
 interface ProductDetails {
     price: number;
     discountPercentage: number;
     title: string;
     description: string;
-    id: Number;
+    id: number;
     images: object;
     category: string;
-    stock: number;
+    stock?: number | undefined;
+    total: number;
 }
 
 const productDetails = ref<ProductDetails>({
@@ -62,23 +65,33 @@ const productDetails = ref<ProductDetails>({
     category: '',
     stock: 0,
     images: {},
+    total: 0,
 });
 
 const addProduct = () => {
-    if (productDetails.value && productDetails.value.stock > 0) {
-        const products = ProductsBasket.value as ProductDetails[]
-        const activeProductIndex = products.findIndex(product => product.id === productDetails.value.id);
+    if (productDetails.value && productDetails.value.stock && productDetails.value.stock > 0) {
+        const updatedProductsBasket = ProductsBasket.value.map(product => {
+            if (product.id === productDetails.value.id) {
+                return {
+                    ...product,
+                    stock: (product.stock || 0) + 1,
+                    total: (product.total || 0) + productDetails.value.price,
+                };
+            }
+            return product;
+        });
 
-        if (activeProductIndex !== -1) {
-            Store.productsBasket[activeProductIndex].stock += 1;
-            Store.productsBasket[activeProductIndex].total += productDetails.value.price;
-        } else {
-            Store.productsBasket.push({
+        const productExists = updatedProductsBasket.some(product => product.id === productDetails.value.id);
+
+        if (!productExists) {
+            updatedProductsBasket.push({
                 ...productDetails.value,
                 stock: 1,
                 total: productDetails.value.price,
             });
         }
+
+        Store.productsBasket = updatedProductsBasket;
         productDetails.value.stock -= 1;
     }
 };
@@ -93,7 +106,10 @@ const productDetailsValue = computed(() => {
         const productValues = Object.values(Products.value) as ProductDetails[];
         const product = productValues.find(product => product.id === productIdFromRoute);
         if (product) {
-            productDetails.value = product;
+            productDetails.value = {
+                ...product,
+                stock: product.stock || 0,
+            };
             return productDetails.value;
         } else {
             return null;
@@ -102,7 +118,6 @@ const productDetailsValue = computed(() => {
 });
 
 watch(productDetailsValue, () => { });
-
 </script>
   
 <style scoped lang="scss">

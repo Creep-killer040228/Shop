@@ -1,23 +1,40 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 
+interface Product {
+  price: number;
+  discountPercentage: number;
+  title: string;
+  description: string;
+  id: number;
+  images: object;
+  category: string;
+  total: number; 
+  stock?: number;
+}
+interface Categories {
+  [key: string]: string;
+}
+interface FilterItem {
+  names: string;
+}
 interface RegularVariables {
-  products: Object;
-  productsBasket: Object;
-  filter: object;
+  products: Product[];
+  productsBasket: Product[];
+  filter: FilterItem[];
   modal: boolean;
   sort: boolean;
   scrollСheck: boolean;
-  filterDefualt: string
-  categoriesDefualt: string
+  filterDefualt: string;
+  categoriesDefualt: string;
   priseSort: boolean;
-  categories: Object
-  filterAll: boolean
-  filterPrice: boolean
-  sortCategori: boolean
-  filterDiscount: boolean
-  filterReiting: boolean
-  modalPurchased: boolean
+  categories: Categories;
+  filterAll: boolean;
+  filterPrice: boolean;
+  sortCategori: boolean;
+  filterDiscount: boolean;
+  filterReiting: boolean;
+  modalPurchased: boolean;
 }
 
 export const useProduct = defineStore({
@@ -42,7 +59,6 @@ export const useProduct = defineStore({
       { names: 'По рейтингу' },
       { names: 'По цене' },
       { names: 'По Скидке' },
-
     ],
     categories: {
       "Смартфоны": "smartphones",
@@ -69,25 +85,26 @@ export const useProduct = defineStore({
   }),
   actions: {
     async getProducts(options: { limit: number, category: string }) {
-      const limit = options.limit || 10
+      const limit = options.limit || 10;
       const categoryName = options.category || '';
       try {
         if (categoryName !== '') {
           const res = await axios.get(`https://dummyjson.com/products/category/${categoryName}`);
-          this.products = res.data.products.map((el) => ({ ...el, total: 0 }));
-          this.scrollСheck = false
-        }
-        else if (categoryName == '') {
+          this.products = res.data.products.map((el: Product) => ({ ...el, total: el.total || 0 }));
+
+          this.scrollСheck = false;
+        } else if (categoryName == '') {
           const res = await axios.get(`https://dummyjson.com/products/?limit=${limit * 12}`);
-          this.products = res.data.products.map((el) => ({ ...el, total: 0 }));
-          this.scrollСheck = true
+          this.products = res.data.products.map((el: Product) => ({ ...el, total: el.total || 0 }));
+
+          this.scrollСheck = true;
         }
       } catch (error) {
         console.error("Произошла ошибка", error);
       }
     },
-    totalSumm() {
-      return this.productsBasket.reduce((total, product) => total + product.total, 0);
+    totalSumm(): number {
+      return this.productsBasket.reduce((total: number, product: Product) => total + product.total, 0);
     }
   },
 });

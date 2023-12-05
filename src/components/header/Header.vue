@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { useProduct } from "@/stores/Product.ts";
+import { useProduct } from "../../stores/Product.ts";
 import { watchEffect } from "vue";
 const Store = useProduct();
 const BtnOverflow = () => {

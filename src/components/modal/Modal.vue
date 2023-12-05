@@ -18,10 +18,9 @@
 <script setup lang="ts">
 import ModalCard from './ModalCard.vue'
 import { useRouter } from "vue-router";
-import { useProduct } from "@/stores/Product.ts";
+import { useProduct } from "../../stores/Product.ts";
 const Store = useProduct();
 const router = useRouter();
-
 const manipulationProduct = (action: 'clear' | 'buy'): void => {
   if (action === 'clear') {
     Store.productsBasket.length = 0;

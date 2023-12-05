@@ -14,29 +14,28 @@
 </template>
   
 <script setup lang="ts">
-const props = defineProps<{
-    productsBasket: {
-        price: number;
-        discountPercentage: number;
-        title: string;
-        thumbnail: string;
-        description: string;
-        id: number;
-        images: object;
-        category: string;
-        stock: number;
-        total: number;
-    };
-}>();
+import { defineProps } from 'vue';
+
+interface Product {
+    id: number;
+    name: string;
+    price: number;
+    total: number;
+    thumbnail?: string;
+    title?: string;
+    stock?: number;
+}
+
+const props = defineProps<{ productsBasket: Product }>();
 
 const editing = (action: 'increment' | 'decrement'): void => {
     const stockChange = 1;
     const priceChange = props.productsBasket.price;
-    if (action === 'increment') {
-        props.productsBasket.stock += stockChange;
-        props.productsBasket.total += priceChange;
 
-    } else if (action === 'decrement' && props.productsBasket.stock > 0) {
+    if (action === 'increment') {
+        props.productsBasket.stock ? props.productsBasket.stock += stockChange : 0;
+        props.productsBasket.total += priceChange;
+    } else if (action === 'decrement' && props.productsBasket.stock && props.productsBasket.stock > 0) {
         props.productsBasket.stock -= stockChange;
         props.productsBasket.total -= priceChange;
     }
@@ -44,4 +43,3 @@ const editing = (action: 'increment' | 'decrement'): void => {
 </script>
   
 <style scoped></style>
-  

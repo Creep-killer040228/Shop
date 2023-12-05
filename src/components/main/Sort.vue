@@ -30,7 +30,8 @@
     </div>
 
     <div class="sort-categori" v-if="Store.sortCategori" @click="Store.sortCategori = !Store.sortCategori">
-      <btnSortVue v-for="(key, item) in Store.categories" :key="key" @click="BtnFilterCategori(key, item)">
+      <btnSortVue v-for="(keys, item) in Store.categories" :key="keys"
+        @click="BtnFilterCategori(keys as string, item as string)">
         {{ item }}
       </btnSortVue>
     </div>
@@ -38,16 +39,19 @@
 </template>
 
 <script setup lang="ts">
-import { useProduct } from "@/stores/Product.ts";
+import { useProduct } from "../../stores/Product.ts";
 import { ref, watch } from "vue";
 const Store = useProduct();
 const applyFilter = ref<boolean>(false);
 const selectedCategory = ref<string>('');
 
-const BtnFilterCategori = (item: string, key: string) => {
-  selectedCategory.value = item;
-  Store.categoriesDefualt = key;
-  Store.getProducts({ category: selectedCategory.value });
+const BtnFilterCategori = (keys: string, item: string) => {
+  selectedCategory.value = keys;
+  Store.categoriesDefualt = item;
+  Store.getProducts({
+    category: selectedCategory.value,
+    limit: 0
+  });
 };
 
 const BtnFilter = (filter: { names: string }) => {
@@ -57,7 +61,10 @@ const BtnFilter = (filter: { names: string }) => {
 
 const applySorting = () => {
   if (Store.filterDefualt === 'Все товары') {
-    Store.getProducts({ category: '' });
+    Store.getProducts({
+      category: '',
+      limit: 0
+    });
     Store.filterAll = true;
     Store.filterPrice = false;
     Store.filterReiting = false;

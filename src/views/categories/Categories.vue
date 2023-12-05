@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import MainList from '@/components/main/MainList.vue';
+import MainList from '../../components/main/MainList.vue';
 
 
 </script>
